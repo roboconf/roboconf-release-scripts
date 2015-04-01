@@ -2,11 +2,14 @@
 
 . ./conf.sh
 
-git tag -a roboconf-web-administration-$VERSION_TO_RELEASE -m "The web administration used with Roboconf Platform $VERSION_TO_RELEASE"
+cd $ROOT_DIR/roboconf-web-administration
+echo "Tagging the web administration..."
 
-CMD=--tags https://github.com/roboconf/roboconf-web-administration.git
-if [ DRY_RUN == "true" ]; then
-	CTX = "--dry-run $CTX"
+CMD="--tags origin"
+if [ $DRY_RUN == "true" ]; then
+	CMD="--dry-run $CMD"
+else
+	git tag -a -f roboconf-web-administration-$VERSION_TO_RELEASE -m "The web administration used with Roboconf Platform $VERSION_TO_RELEASE"
 fi
 
 git push $CMD
