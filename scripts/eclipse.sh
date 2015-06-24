@@ -11,9 +11,9 @@ sed -i "s/$VERSION_TO_RELEASE-SNAPSHOT/$VERSION_TO_RELEASE/g" pom.xml
 
 # Do not change the other versions, we will keep the qualifiers.
 mvn clean verify
-mkdir -p to-upload
+mkdir -p to_upload
 rm -rf to_upload/*
-cp repository/target/*.zip to-upload/
+cp repository/target/*.zip to_upload/
 
 
 # Create the tag
