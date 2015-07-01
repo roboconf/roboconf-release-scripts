@@ -39,7 +39,7 @@ DIR="$(localStagingDirectory ${ROBOCONF_EXAMPLES})"
 mkdir -p "${DIR}" && cd "${DIR}"
 ensureSuccess $? "Cannot create/access local staging directory: ${DIR}"
 
-git clone "$(gitRepositoryUrl ${ROBOCONF_PLATFORM})" "${DIR}"
+git clone "$(gitRepositoryUrl ${ROBOCONF_EXAMPLES})" "${DIR}"
 ensureSuccess $? "Cannot clone project in ${DIR}"
 
 
@@ -71,7 +71,7 @@ echo
 echo "Bumping versions for next development iteration..."
 echo
 
-mvn versions:set -DnewVersion=${DEVELOPMENT_VERSION} -DgenerateBackupPoms=false
+mvn versions:set -DnewVersion="${DEVELOPMENT_VERSION}" -DgenerateBackupPoms=false
 ensureSuccess $? "Failed to bump versions for next development iteration"
 
 git commit -a -m "Switching to the new development version"
@@ -82,9 +82,10 @@ echo
 echo "Pushing tag & commit to origin..."
 echo
 
-ARGS=""
 if [[ "${DRY_RUN}" == "true" ]]; then
-	ARGS="--dry-run"
+	git push --dry-run --tags origin master
+else
+  git push --tags origin master
 fi
-git push "${ARGS}" --tags origin
+
 ensureSuccess $? "Failed to push tag and commit to origin"

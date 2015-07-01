@@ -39,7 +39,7 @@ DIR="$(localStagingDirectory ${ROBOCONF_WEB_ADMINISTRATION})"
 mkdir -p "${DIR}" && cd "${DIR}"
 ensureSuccess $? "Cannot create/access local staging directory: ${DIR}"
 
-git clone "$(gitRepositoryUrl ${ROBOCONF_ECLIPSE})" "${DIR}"
+git clone "$(gitRepositoryUrl ${ROBOCONF_WEB_ADMINISTRATION})" "${DIR}"
 ensureSuccess $? "Cannot clone project in ${DIR}"
 
 
@@ -56,8 +56,8 @@ echo
 echo "Pushing tag & commit to origin..."
 echo
 
-ARGS=""
 if [[ "${DRY_RUN}" == "true" ]]; then
-	ARGS="--dry-run"
+	git push --tags origin --dry-run
+else
+  git push --tags origin
 fi
-git push --tags origin "${ARGS}"

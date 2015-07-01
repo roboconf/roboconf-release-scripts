@@ -39,7 +39,7 @@ DIR="$(localStagingDirectory ${ROBOCONF_WEBSITE})"
 mkdir -p "${DIR}" && cd "${DIR}"
 ensureSuccess $? "Cannot create/access local staging directory: ${DIR}"
 
-git clone "$(gitRepositoryUrl ${ROBOCONF_ECLIPSE})" "${DIR}"
+git clone "$(gitRepositoryUrl ${ROBOCONF_WEBSITE})" "${DIR}"
 ensureSuccess $? "Cannot clone project in ${DIR}"
 
 

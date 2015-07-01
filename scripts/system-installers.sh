@@ -31,39 +31,47 @@ source common.sh
 
 
 echo
-echo "Checking out the eclipse plugin..."
+echo "Checking out the system installers..."
 echo
 
-DIR="$(localStagingDirectory ${ROBOCONF_ECLIPSE})"
+DIR="$(localStagingDirectory ${ROBOCONF_SYSTEM_INSTALLERS})"
 
 mkdir -p "${DIR}" && cd "${DIR}"
 ensureSuccess $? "Cannot create/access local staging directory: ${DIR}"
 
-git clone "$(gitRepositoryUrl ${ROBOCONF_ECLIPSE})" "${DIR}"
+git clone "$(gitRepositoryUrl ${ROBOCONF_SYSTEM_INSTALLERS})" "${DIR}"
 ensureSuccess $? "Cannot clone project in ${DIR}"
 
 
 
 echo
-echo "Tagging the eclipse plugin..."
+echo "Bump versions for release..."
+echo
+
+mvn versions:set -DnewVersion="${RELEASE_VERSION}" -DgenerateBackupPoms=false
+ensureSuccess $? "Failed to bump versions for release"
+
+mvn clean verify
+ensureSuccess $? "Failed to verify the system installers build"
+
+git commit -a -m "Roboconf system installers ${RELEASE_VERSION}"
+ensureSuccess $? "Failed to commit the released system installers"
+
+
+
+echo
+echo "Tagging the system installers..."
 echo
 
 
-# Use the last platform version
-sed -i "s/${RELEASE_VERSION}-SNAPSHOT/${RELEASE_VERSION}/g" pom.xml
-
-# Do not change the other versions, we will keep the qualifiers.
-mvn clean verify
-ensureSuccess $? "Failed to verify the eclipse plugin build"
-
 TO_UPLOAD="to_upload"
 
-mkdir -p "${TO_UPLOAD}" && cp repository/target/*.zip "${TO_UPLOAD}/"
-ensureSuccess $? "Failed to copy repository files in ${TO_UPLOAD}"
+mkdir -p "${TO_UPLOAD}" && cp roboconf-dist-debian-agent/target/*.deb roboconf-dist-debian-dm/target/*.deb "${TO_UPLOAD}/"
+ensureSuccess $? "Failed to copy Deb packages in ${TO_UPLOAD}"
 
 # Create the tag
-git tag -a -f "roboconf-eclipse-${RELEASE_VERSION}" -m "Eclipse tooling for Roboconf ${RELEASE_VERSION}"
-ensureSuccess $? "Failed to tag eclipse plugin"
+git tag -a -f "roboconf-system-installers-${RELEASE_VERSION}" -m "Roboconf system installers ${RELEASE_VERSION}"
+ensureSuccess $? "Failed to tag system installers"
 
 
 
@@ -71,19 +79,8 @@ echo
 echo "Bumping versions for next development iteration..."
 echo
 
-# Match with Eclipse versioning
-# 0.4-SNAPSHOT => 0.4.0-SNAPSHOT
-REPLACEMENT="${DEVELOPMENT_VERSION/-SNAPSHOT/}"
-
-# Update the platform version
-sed -i "s/<roboconf.platform.version>${RELEASE_VERSION}/<roboconf.platform.version>${DEVELOPMENT_VERSION}/g" pom.xml
-
-# Update the other versions
-sed -i "s/${RELEASE_VERSION}/${REPLACEMENT}/g" pom.xml
-sed -i "s/${RELEASE_VERSION}/${REPLACEMENT}/g" **/pom.xml
-sed -i "s/${RELEASE_VERSION}/${REPLACEMENT}/g" features/net.roboconf.eclipse.feature/feature.xml
-sed -i "s/${RELEASE_VERSION}/${REPLACEMENT}/g" plugins/net.roboconf.eclipse.plugin/META-INF/MANIFEST.MF
-sed -i "s/${RELEASE_VERSION}/${REPLACEMENT}/g" repository/category.xml
+mvn versions:set -DnewVersion="${DEVELOPMENT_VERSION}" -DgenerateBackupPoms=false
+ensureSuccess $? "Failed to bump versions for next development iteration"
 
 git commit -a -m "Switching to the new development version"
 ensureSuccess $? "Failed to commit for next development iteration"
@@ -95,16 +92,18 @@ echo "Pushing tag & commit to origin..."
 echo
 
 if [[ "${DRY_RUN}" == "true" ]]; then
-	git push --tags origin master --dry-run
+	git push --dry-run --tags origin master
 else
   git push --tags origin master
 fi
+
 ensureSuccess $? "Failed to push tag and commit to origin"
 
 
 
+
 echo
-echo "Upload the ZIP file to Bintray."
+echo "Upload the DEB files to Bintray."
 echo
 
 # ?? TODO Automate ??
