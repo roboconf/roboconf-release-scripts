@@ -32,11 +32,11 @@
 
 # The version to be release.
 # /!\ To be incremented manually!!!
-readonly RELEASE_VERSION="0.4"
+readonly RELEASE_VERSION="0.5"
 
 # The version of the next development iteration.
 # /!\ To be incremented manually!!!
-readonly DEVELOPMENT_VERSION="0.5-SNAPSHOT"
+readonly DEVELOPMENT_VERSION="0.6-SNAPSHOT"
 
 # Dry run: don't checkin or tag anything in the repositories.
 readonly DRY_RUN="true"
