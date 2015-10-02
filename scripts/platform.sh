@@ -59,3 +59,10 @@ echo "Performing the platform release..."
 echo
 mvn release:perform -B -DdryRun="${DRY_RUN}"
 ensureSuccess $? "Failed to perform the release"
+
+
+
+echo
+echo "Updating the parent POM's properties..."
+echo
+sed -i "s/[0-9]\.[0-9])\(<\/version\.range>\)/${NEXT_MINOR_VERSION})\1/g" pom.xml

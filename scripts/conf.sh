@@ -38,6 +38,10 @@ readonly RELEASE_VERSION="0.5"
 # /!\ To be incremented manually!!!
 readonly DEVELOPMENT_VERSION="0.6-SNAPSHOT"
 
+# The next minor version (for import-package directives).
+# /!\ To be incremented manually!!!
+readonly NEXT_MINOR_VERSION="0.7"
+
 # Dry run: don't checkin or tag anything in the repositories.
 readonly DRY_RUN="true"
 
