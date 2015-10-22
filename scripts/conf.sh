@@ -34,16 +34,20 @@
 # /!\ To be incremented manually!!!
 readonly RELEASE_VERSION="0.5"
 
+# The previous release's version (for the web site).
+# /!\ To be incremented manually!!!
+readonly PREVIOUS_VERSION="0.4"
+
 # The version of the next development iteration.
 # /!\ To be incremented manually!!!
 readonly DEVELOPMENT_VERSION="0.6-SNAPSHOT"
 
 # The next minor version (for import-package directives).
 # /!\ To be incremented manually!!!
-readonly NEXT_MINOR_VERSION="0.7"
+readonly NEXT_MINOR_VERSION="0.6"
 
 # Dry run: don't checkin or tag anything in the repositories.
-readonly DRY_RUN="true"
+readonly DRY_RUN="false"
 
 # The local directory where the scripts check out and build the Roboconf source.
 readonly STAGING_DIR="/tmp/roboconf-release-staging"
