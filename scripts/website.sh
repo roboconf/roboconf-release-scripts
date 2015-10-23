@@ -90,6 +90,9 @@ fi
 cp -R en/user-guide-snapshot "${USER_GUIDE_DIR}" && cd "${USER_GUIDE_DIR}"
 ensureSuccess $? "Failed to copy the snapshot user guide to ${USER_GUIDE_DIR}"
 
+# Update the version in all the pages
+sed -i "s/%v_SNAP%/${RELEASE_VERSION}/g" *.md
+
 # Update the page IDs
 sed -i "s/ug-snapshot/ug-last/g" *.md
 sed -i "s/\"user-guide\", \"Snapshot\"/\"user-guide\"/g" *.md
