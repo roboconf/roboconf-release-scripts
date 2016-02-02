@@ -26,7 +26,7 @@
 
 
 # Imports the configuration
-source conf.sh
+source 1.conf.sh
 
 
 

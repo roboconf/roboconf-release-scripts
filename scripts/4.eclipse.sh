@@ -50,7 +50,7 @@ echo
 
 
 # Use the last platform version
-sed -i "s/${RELEASE_VERSION}-SNAPSHOT/${RELEASE_VERSION}/g" pom.xml
+sed -i "s/>${RELEASE_VERSION}-SNAPSHOT/>${RELEASE_VERSION}/g" pom.xml
 
 # Do not change the other versions, we will keep the qualifiers.
 mvn clean verify
@@ -79,13 +79,13 @@ REPLACEMENT="${DEVELOPMENT_VERSION/-SNAPSHOT/}"
 sed -i "s/<roboconf.platform.version>${RELEASE_VERSION}/<roboconf.platform.version>${DEVELOPMENT_VERSION}/g" pom.xml
 
 # Update the other versions
-sed -i "s/${RELEASE_VERSION}/${REPLACEMENT}/g" pom.xml
-sed -i "s/${RELEASE_VERSION}/${REPLACEMENT}/g" **/pom.xml
-sed -i "s/${RELEASE_VERSION}/${REPLACEMENT}/g" features/net.roboconf.eclipse.feature/feature.xml
-sed -i "s/${RELEASE_VERSION}/${REPLACEMENT}/g" plugins/net.roboconf.eclipse.plugin/META-INF/MANIFEST.MF
-sed -i "s/${RELEASE_VERSION}/${REPLACEMENT}/g" repository/category.xml
+for i in $(find . -type f -name pom.xml); do sed -i "s/>${RELEASE_VERSION}/>${REPLACEMENT}/g" $i; done
 
-git commit -a -m "Switching to the new development version"
+sed -i "s/Bundle-Version: ${RELEASE_VERSION}/Bundle-Version: ${REPLACEMENT}/g" plugins/net.roboconf.eclipse.plugin/META-INF/MANIFEST.MF
+sed -i "s/\"${RELEASE_VERSION}/\"${REPLACEMENT}/g" features/net.roboconf.eclipse.feature/feature.xml
+sed -i "s/\"${RELEASE_VERSION}/\"${REPLACEMENT}/g" repository/category.xml
+
+#git commit -a -m "Switching to the new development version"
 ensureSuccess $? "Failed to commit for next development iteration"
 
 
