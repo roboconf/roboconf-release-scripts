@@ -31,33 +31,21 @@ source common.sh
 
 
 echo
-echo "Checking out the web administration..."
+echo "Committing the web site..."
 echo
 
-DIR="$(localStagingDirectory ${ROBOCONF_WEB_ADMINISTRATION})"
-
-mkdir -p "${DIR}" && cd "${DIR}"
-ensureSuccess $? "Cannot create/access local staging directory: ${DIR}"
-
-git clone "$(gitRepositoryUrl ${ROBOCONF_WEB_ADMINISTRATION})" "${DIR}"
-ensureSuccess $? "Cannot clone project in ${DIR}"
-
+DIR="$(localStagingDirectory ${ROBOCONF_WEBSITE})"
+git commit -a -f "${DIR}" -m "New web site update after the release of Roboconf ${RELEASE_VERSION}"
 
 
 echo
-echo "Tagging the web administration..."
-echo
-
-git tag -a -f "roboconf-web-administration-${RELEASE_VERSION}" -m "The web administration used with Roboconf Platform ${RELEASE_VERSION}"
-
-
-
-echo
-echo "Pushing tag & commit to origin..."
+echo "Pushing to origin..."
 echo
 
 if [[ "${DRY_RUN}" == "true" ]]; then
-	git push --tags origin --dry-run
+	git push --dry-run origin master
 else
-  git push --tags origin
+  git push origin master
 fi
+
+ensureSuccess $? "Failed to push the commit to origin"
