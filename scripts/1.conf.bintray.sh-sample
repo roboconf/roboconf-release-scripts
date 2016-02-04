@@ -24,17 +24,15 @@
 # limitations under the License.
 
 
-echo
-echo "Help about Roboconf's release scripts"
-echo
-echo "1. Create/update conf.bintray.sh and edit conf.sh with your settings."
-echo "2. Update and tag roboconf-web-administration."
-echo "3. Release roboconf-platform. Wait for it to be available on Maven Central."
-echo "4. Release roboconf-eclipse-plugin."
-echo "5. Release roboconf-system-installers."
-echo "6. Update the web site. There may be some little things to complete by hand."
-echo "7. Commit and push the web site on Github."
-echo "8. Update and tag roboconf-examples."
-echo
-echo "Visit http://roboconf.net/en/developer-guide/release-management.html for more details."
-echo
+
+################################################################################
+# Bintray credentials.
+# Copy this file as "1.conf.bintray.sh" and add your settings.
+# "1.conf.bintray.sh" is part of this project's gitignore.
+################################################################################
+
+# Your Bintray user name.
+readonly BINTRAY_USER=""
+
+# Your Bintray's API key (to be found in your settings).
+readonly BINTRAY_API_KEY=""

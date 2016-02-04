@@ -17,3 +17,6 @@
 #idea
 *.iml
 .idea/
+
+# Ignore confidential settings 
+scripts/1.conf.bintray.sh

@@ -27,7 +27,7 @@
 
 # Imports the configuration
 source 1.conf.sh
-
+source 1.conf.bintray.sh
 
 
 ################################################################################
@@ -43,6 +43,9 @@ readonly ROBOCONF_PLATFORM="roboconf-platform"
 readonly ROBOCONF_SYSTEM_INSTALLERS="roboconf-system-installers"
 readonly ROBOCONF_WEB_ADMINISTRATION="roboconf-web-administration"
 readonly ROBOCONF_WEBSITE="roboconf.github.io"
+
+# Bintray parameters
+readonly BINTRAY_URL="https://bintray.com/api/v1"
 
 
 
