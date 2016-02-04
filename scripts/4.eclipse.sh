@@ -31,6 +31,14 @@ source common.sh
 
 
 echo
+echo "Verifying CURL is installed..."
+echo
+
+curl --version
+
+
+
+echo
 echo "Checking out the eclipse plugin..."
 echo
 
@@ -104,7 +112,32 @@ ensureSuccess $? "Failed to push tag and commit to origin"
 
 
 echo
-echo "Upload the ZIP file to Bintray."
+echo "Creating the version on Bintray..."
 echo
 
-# ?? TODO Automate ??
+curl -vvf -u${BINTRAY_USER}:${BINTRAY_API_KEY} -H "Content-Type: application/json" \
+	-X POST ${BINTRAY_URL}/packages/roboconf/roboconf-eclipse/update-sites/versions \
+	--data "{\"name\": \"${RELEASE_VERSION}\", \"github_use_tag_release_notes\": false }"
+	
+	
+	
+	
+echo
+echo "Uploading the plug-ins to Bintray..."
+echo
+
+for f in repository/target/*.zip
+do
+	echo "Uploading $f"
+	curl -X PUT -T $f -u ${BINTRAY_USER}:${BINTRAY_API_KEY} \
+		-H "X-Bintray-Package:update-sites" \
+		-H "X-Bintray-Version:${RELEASE_VERSION}" \
+		-H "X-Bintray-Explode:1" \
+		${BINTRAY_URL}/content/roboconf/roboconf-eclipse/${RELEASE_VERSION}/
+done
+
+
+
+echo
+echo "Please, visit https://bintray.com/roboconf/roboconf-eclipse/update-sites/${RELEASE_VERSION}/view to publish the uploaded files."
+echo

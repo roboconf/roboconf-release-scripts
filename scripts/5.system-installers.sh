@@ -133,7 +133,7 @@ echo
 for f in $(find -name "*.deb" -type f)
 do
 	echo "Uploading $f"
-	curl -vvf T $f -u${BINTRAY_USER}:${BINTRAY_API_KEY} \
+	curl -X PUT -T $f -u ${BINTRAY_USER}:${BINTRAY_API_KEY} \
 		-H "X-Bintray-Debian-Distribution:jessie" \
 		-H "X-Bintray-Debian-Component:main" \
 		-H "X-Bintray-Debian-Architecture:i386,amd64" \
