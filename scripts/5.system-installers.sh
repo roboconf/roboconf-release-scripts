@@ -101,6 +101,13 @@ ensureSuccess $? "Failed to push tag and commit to origin"
 
 
 
+echo
+echo "Updating the package names for Bintray..."
+echo
+
+find -name "*+*.deb" -type f | rename 's/\+/_/g'
+
+
 
 echo
 echo "Upload the DEB files to Bintray."
