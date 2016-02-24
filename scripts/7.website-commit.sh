@@ -37,7 +37,8 @@ echo
 DIR="$(localStagingDirectory ${ROBOCONF_WEBSITE})"
 cd "${DIR}"
 
-git add * -f
+git add en/* -f
+git add fr/* -f
 git commit -a -m "New web site update after the release of Roboconf ${RELEASE_VERSION}"
 
 
