@@ -93,7 +93,7 @@ sed -i "s/Bundle-Version: ${RELEASE_VERSION}/Bundle-Version: ${REPLACEMENT}/g" p
 sed -i "s/\"${RELEASE_VERSION}/\"${REPLACEMENT}/g" features/net.roboconf.eclipse.feature/feature.xml
 sed -i "s/\"${RELEASE_VERSION}/\"${REPLACEMENT}/g" repository/category.xml
 
-#git commit -a -m "Switching to the new development version"
+git commit -a -m "Switching to the new development version"
 ensureSuccess $? "Failed to commit for next development iteration"
 
 

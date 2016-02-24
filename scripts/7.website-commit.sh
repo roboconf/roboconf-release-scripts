@@ -35,7 +35,10 @@ echo "Committing the web site..."
 echo
 
 DIR="$(localStagingDirectory ${ROBOCONF_WEBSITE})"
-git commit -a -f "${DIR}" -m "New web site update after the release of Roboconf ${RELEASE_VERSION}"
+cd "${DIR}"
+
+git add * -f
+git commit -a -m "New web site update after the release of Roboconf ${RELEASE_VERSION}"
 
 
 echo
