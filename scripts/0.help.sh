@@ -23,14 +23,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+clear
 
 echo
 echo "Help about Roboconf's release scripts"
 echo
 echo "1. Create/update conf.bintray.sh and edit conf.sh with your settings."
 echo "2. Update and tag roboconf-web-administration."
-echo "3. Release roboconf-platform. Wait for it to be available on Maven Central."
-echo "Be careful, there are 2 scripts: one for « normal » releases and one for « maintenance » releases."
+echo "3. Release roboconf-platform."
+echo "   Be careful, there are 2 scripts: one for « normal » releases and one for « maintenance » releases."
+echo
+echo "   Wait for the platform to be available on Maven Central."
+echo
 echo "4. Release roboconf-eclipse-plugin."
 echo "5. Release roboconf-system-installers."
 echo "6. Update the web site. There may be some little things to complete by hand."

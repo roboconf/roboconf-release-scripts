@@ -80,6 +80,7 @@ echo "Running tests..."
 echo
 
 ./tests/run-tests-in-docker.sh
+ensureSuccess $? "One or several tests failed"
 
 
 
@@ -130,6 +131,14 @@ ensureSuccess $? "Failed to push tag and commit to origin"
 
 
 echo
+echo "Updating the package names for Bintray..."
+echo
+
+find -name "*+*.deb" -type f | rename 's/\+/_/g'
+
+
+
+echo
 echo "Creating the version on Bintray (DEB)..."
 echo
 
@@ -145,6 +154,7 @@ echo
 
 for f in $(find -name "*.deb" -type f)
 do
+	echo
 	echo "Uploading $f"
 	curl -X PUT -T $f -u ${BINTRAY_USER}:${BINTRAY_API_KEY} \
 		-H "X-Bintray-Debian-Distribution:jessie" \
@@ -171,6 +181,7 @@ echo
 
 for f in $(find -name "*.rpm" -type f)
 do
+	echo
 	echo "Uploading $f"
 	curl -X PUT -T $f -u ${BINTRAY_USER}:${BINTRAY_API_KEY} \
 		-H "X-Bintray-Version:${RELEASE_VERSION}" \
