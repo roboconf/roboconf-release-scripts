@@ -160,7 +160,12 @@ do
 		-H "X-Bintray-Debian-Distribution:jessie" \
 		-H "X-Bintray-Debian-Component:main" \
 		-H "X-Bintray-Debian-Architecture:i386,amd64" \
+		-# -o "/tmp/curl-output.txt" \
 		${BINTRAY_URL}/content/roboconf/roboconf-debian-packages/main/${RELEASE_VERSION}/
+	
+	echo
+	echo "$(</tmp/curl-output.txt)"
+	echo
 done
 
 
@@ -185,7 +190,13 @@ do
 	echo "Uploading $f"
 	curl -X PUT -T $f -u ${BINTRAY_USER}:${BINTRAY_API_KEY} \
 		-H "X-Bintray-Version:${RELEASE_VERSION}" \
+		-H "X-Bintray-Package:main" \
+		-# -o "/tmp/curl-output.txt" \
 		${BINTRAY_URL}/content/roboconf/roboconf-rpm/main/${RELEASE_VERSION}/
+	
+	echo
+	echo "$(</tmp/curl-output.txt)"
+	echo
 done
 
 
@@ -193,3 +204,14 @@ done
 echo
 echo "Please, visit https://bintray.com/roboconf/roboconf-debian-packages/main/${RELEASE_VERSION}/view to publish the uploaded files."
 echo
+echo "Notice that RPM meta-data should be calculated automatically after artifacts are published."
+echo "See http://dl.bintray.com/roboconf/roboconf-rpm/repodata/repomd.xml"
+echo
+echo "If it was not updated, please refer to this script sources."
+echo
+
+
+#
+# Here is the CURL command to force the calculation of RPM meta-data. 
+# curl -X POST -u ${BINTRAY_USER}:${BINTRAY_API_KEY} https://api.bintray.com/calc_metadata/roboconf/roboconf-rpm
+#

@@ -133,7 +133,12 @@ do
 		-H "X-Bintray-Package:update-sites" \
 		-H "X-Bintray-Version:${RELEASE_VERSION}" \
 		-H "X-Bintray-Explode:1" \
+		-# -o "/tmp/curl-output.txt" \
 		${BINTRAY_URL}/content/roboconf/roboconf-eclipse/${RELEASE_VERSION}/
+
+	echo
+	echo "$(</tmp/curl-output.txt)"
+	echo
 done
 
 
