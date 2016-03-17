@@ -30,19 +30,37 @@
 # Please edit this file *BEFORE* performing a release.
 ################################################################################
 
+
+#######################################################
+# Basic Properties
+#######################################################
+
+
 # The version to be released.
+# A new tag with this version will be created in the appropriate Git repositories.
 # /!\ To be incremented manually!!!
-readonly RELEASE_VERSION="0.6"
+readonly RELEASE_VERSION="0.6.1"
 
 # The previous release's version (for the web site).
+# "user-guide" will be renamed "user-guide-${PREVIOUS_VERSION}".
 # /!\ To be incremented manually!!!
 readonly PREVIOUS_VERSION="0.5"
 
-# The version of the next development iteration.
+# The version of the next development iteration (no qualifier).
+# This is for the system installers which use a custom qualifier.
 # /!\ To be incremented manually!!!
-readonly DEVELOPMENT_VERSION="0.7-SNAPSHOT"
+readonly SHORT_DEVELOPMENT_VERSION="0.7"
+
+# The version of the next development iteration (full version).
+# /!\ To be incremented manually!!!
+readonly DEVELOPMENT_VERSION="${SHORT_DEVELOPMENT_VERSION}-SNAPSHOT"
 
 # The next minor version (for import-package directives).
+#
+# Typically, the parent POM in the platform defines a property whose value
+# is [${project.version}, ${NEXT_MINOR_VERSION}). It is used to define a
+# version range for OSGi imports.
+#
 # /!\ To be incremented manually!!!
 readonly NEXT_MINOR_VERSION="0.8"
 
@@ -51,3 +69,29 @@ readonly DRY_RUN="false"
 
 # The local directory where the scripts check out and build the Roboconf source.
 readonly STAGING_DIR="/tmp/roboconf-release-staging"
+
+
+#######################################################
+# Advanced Properties
+#######################################################
+
+
+# The tag to checkout for a maintenance release.
+#
+# Only used by the platform's maintenance release script.
+# If you are not releasing a maintenance version of the platform, do not modify it.
+#
+# /!\ To be incremented manually!!! 
+readonly MAINTENANCE_VERSION="0.6"
+
+# The package version for system installers.
+#
+# When doing a full release of the platform (0.6, 0.6.1, 0.6.2, 0.7...),
+# this property should be "1.0".
+#
+# When releasing a maintenance version
+# of a SYSTEM PACKAGE, that is to say to fix a bug in the packages (and not
+# in the platform), then you should update this property.
+#
+# /!\ To be incremented manually!!! 
+readonly PACKAGE_VERSION_UPDATE="1.0"

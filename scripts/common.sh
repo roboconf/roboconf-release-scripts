@@ -56,7 +56,7 @@ readonly BINTRAY_URL="https://bintray.com/api/v1"
 # Returns the Git repository URL for the given Roboconf project.
 # @param 1    the name of the Roboconf project. One of the above constants.
 # @stdout     the Git repository URL for the given Roboconf project.
-function gitRepositoryUrl() {
+gitRepositoryUrl() {
 	echo "git@github.com:roboconf/$1.git"
 }
 
@@ -64,7 +64,7 @@ function gitRepositoryUrl() {
 # @param 1    the name of the Roboconf project. One of the above constants.
 # @globals    STAGING_DIR
 # @stdout     the local staging directory for the given Roboconf project.
-function localStagingDirectory() {
+localStagingDirectory() {
 	echo "${STAGING_DIR}/$1"
 }
 
@@ -72,7 +72,7 @@ function localStagingDirectory() {
 # @param 1    the return code to check.
 # @param 2    the error message to display in case the given error code is non-zero.
 # @stdout     nothing in case of success, the given error message otherwise.
-function ensureSuccess() {
+ensureSuccess() {
 	if [[ $1 -ne 0 ]]; then
 		echo
 		echo "Error: $2"

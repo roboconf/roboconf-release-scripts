@@ -38,6 +38,14 @@ curl --version
 
 
 echo
+echo "Verifying Docker is installed..."
+echo
+
+docker --version
+
+
+
+echo
 echo "Checking out the system installers..."
 echo
 
@@ -55,14 +63,23 @@ echo
 echo "Bump versions for release..."
 echo
 
-mvn versions:set -DnewVersion="${RELEASE_VERSION}" -DgenerateBackupPoms=false
-ensureSuccess $? "Failed to bump versions for release"
+sed -i "s/<roboconf.short.version>.*<\/roboconf.short.version>/<roboconf.short.version>${RELEASE_VERSION}<\/roboconf.short.version>/g" pom.xml
+sed -i "s/<package.build.version>.*<\/package.build.version>/<package.build.version>${PACKAGE_VERSION_UPDATE}<\/package.build.version>/g" pom.xml
+sed -i "s/<version.qualifier>.*<\/version.qualifier>/<version.qualifier><\/version.qualifier>/g" pom.xml
 
 mvn clean verify
 ensureSuccess $? "Failed to verify the system installers build"
 
 git commit -a -m "Roboconf system installers ${RELEASE_VERSION}"
 ensureSuccess $? "Failed to commit the released system installers"
+
+
+
+echo
+echo "Running tests..."
+echo
+
+./tests/run-tests-in-docker.sh
 
 
 
@@ -86,8 +103,12 @@ echo
 echo "Bumping versions for next development iteration..."
 echo
 
-mvn versions:set -DnewVersion="${DEVELOPMENT_VERSION}" -DgenerateBackupPoms=false
-ensureSuccess $? "Failed to bump versions for next development iteration"
+sed -i "s/<roboconf.short.version>.*<\/roboconf.short.version>/<roboconf.short.version>${SHORT_DEVELOPMENT_VERSION}<\/roboconf.short.version>/g" pom.xml
+sed -i "s/<package.build.version>.*<\/package.build.version>/<package.build.version>1.0<\/package.build.version>/g" pom.xml
+sed -i "s/<version.qualifier>.*<\/version.qualifier>/<version.qualifier>-SNAPSHOT<\/version.qualifier>/g" pom.xml
+
+mvn validate
+ensureSuccess $? "Failed to verify the system installers after the switch for the next iteration"
 
 git commit -a -m "Switching to the new development version"
 ensureSuccess $? "Failed to commit for next development iteration"
@@ -109,15 +130,7 @@ ensureSuccess $? "Failed to push tag and commit to origin"
 
 
 echo
-echo "Updating the package names for Bintray..."
-echo
-
-find -name "*+*.deb" -type f | rename 's/\+/_/g'
-
-
-
-echo
-echo "Creating the version on Bintray..."
+echo "Creating the version on Bintray (DEB)..."
 echo
 
 curl -vvf -u${BINTRAY_USER}:${BINTRAY_API_KEY} -H "Content-Type: application/json" \
@@ -138,6 +151,30 @@ do
 		-H "X-Bintray-Debian-Component:main" \
 		-H "X-Bintray-Debian-Architecture:i386,amd64" \
 		${BINTRAY_URL}/content/roboconf/roboconf-debian-packages/main/${RELEASE_VERSION}/
+done
+
+
+
+echo
+echo "Creating the version on Bintray (RPM)..."
+echo
+
+curl -vvf -u${BINTRAY_USER}:${BINTRAY_API_KEY} -H "Content-Type: application/json" \
+	-X POST ${BINTRAY_URL}/packages/roboconf/roboconf-rpm/main/versions \
+	--data "{\"name\": \"${RELEASE_VERSION}\", \"github_use_tag_release_notes\": false }"
+
+
+
+echo
+echo "Uploading the RPM files to Bintray..."
+echo
+
+for f in $(find -name "*.rpm" -type f)
+do
+	echo "Uploading $f"
+	curl -X PUT -T $f -u ${BINTRAY_USER}:${BINTRAY_API_KEY} \
+		-H "X-Bintray-Version:${RELEASE_VERSION}" \
+		${BINTRAY_URL}/content/roboconf/roboconf-rpm/main/${RELEASE_VERSION}/
 done
 
 
