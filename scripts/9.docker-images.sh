@@ -31,25 +31,56 @@ source common.sh
 
 
 echo
-echo "Committing the web site..."
+echo "Checking out the Dockerfile..."
 echo
 
-DIR="$(localStagingDirectory ${ROBOCONF_WEBSITE})"
-cd "${DIR}"
+DIR="$(localStagingDirectory ${ROBOCONF_DOCKER})"
 
-git add -A
-git commit -m "New web site update after the release of Roboconf ${RELEASE_VERSION}"
+mkdir -p "${DIR}" && cd "${DIR}"
+ensureSuccess $? "Cannot create/access local staging directory: ${DIR}"
+
+git clone "$(gitRepositoryUrl ${ROBOCONF_DOCKER})" "${DIR}"
+ensureSuccess $? "Cannot clone project in ${DIR}"
+
 
 
 echo
-echo "Pushing to origin..."
+echo "Building the images..."
 echo
 
-if [[ "${DRY_RUN}" == "true" ]]; then
-	git push --dry-run origin master
-else
-  git push origin master
-fi
+cd meta-scripts
 
-ensureSuccess $? "Failed to push the commit to origin"
+./build.sh "dm"
+ensureSuccess $? "The image for the DM could not be built."
+
+./verify.sh "dm"
+ensureSuccess $? "The verification for the DM's image failed."
+
+./build.sh "agent"
+ensureSuccess $? "The image for the agent could not be built."
+
+./verify.sh "agent"
+ensureSuccess $? "The verification for the agent's image failed."
+
+cd ..
+
+
+
+echo
+echo "Uploading the images to Docker Hub..."
+echo
+
+docker login -u=${DOCKER_HUB_USER} -p=${DOCKER_HUB_PWD}
+docker push roboconf/roboconf-dm:${RELEASE_VERSION}
+docker push roboconf/roboconf-agent:${RELEASE_VERSION}
+docker logout
+
+
+
+echo
+echo "Tagging the release..."
+echo
+
+git tag -a -f "roboconf-dockerfile-${RELEASE_VERSION}" -m "Dockerfile for Roboconf ${RELEASE_VERSION}"
+ensureSuccess $? "Failed to tag the Dockerfile"
 

@@ -20,3 +20,5 @@
 
 # Ignore confidential settings 
 scripts/1.conf.bintray.sh
+scripts/1.conf.dockerhub.sh
+

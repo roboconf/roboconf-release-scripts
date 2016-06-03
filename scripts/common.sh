@@ -42,6 +42,7 @@ readonly ROBOCONF_PARENT="roboconf-parent"
 readonly ROBOCONF_PLATFORM="roboconf-platform"
 readonly ROBOCONF_SYSTEM_INSTALLERS="roboconf-system-installers"
 readonly ROBOCONF_WEB_ADMINISTRATION="roboconf-web-administration"
+readonly ROBOCONF_DOCKER="roboconf-dockerfile"
 readonly ROBOCONF_WEBSITE="roboconf.github.io"
 
 # Bintray parameters
