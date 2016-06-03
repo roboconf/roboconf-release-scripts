@@ -50,13 +50,13 @@ echo
 
 cd meta-scripts
 
-./build.sh "dm"
+./build.sh "dm" "${RELEASE_VERSION}"
 ensureSuccess $? "The image for the DM could not be built."
 
 ./verify.sh "dm"
 ensureSuccess $? "The verification for the DM's image failed."
 
-./build.sh "agent"
+./build.sh "agent" "${RELEASE_VERSION}"
 ensureSuccess $? "The image for the agent could not be built."
 
 ./verify.sh "agent"
