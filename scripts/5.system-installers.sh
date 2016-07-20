@@ -88,13 +88,6 @@ echo
 echo "Tagging the system installers..."
 echo
 
-
-TO_UPLOAD="to_upload"
-
-mkdir -p "${TO_UPLOAD}" && cp roboconf-dist-debian-agent/target/*.deb roboconf-dist-debian-dm/target/*.deb "${TO_UPLOAD}/"
-ensureSuccess $? "Failed to copy Deb packages in ${TO_UPLOAD}"
-
-# Create the tag
 git tag -a -f "roboconf-system-installers-${RELEASE_VERSION}" -m "Roboconf system installers ${RELEASE_VERSION}"
 ensureSuccess $? "Failed to tag system installers"
 

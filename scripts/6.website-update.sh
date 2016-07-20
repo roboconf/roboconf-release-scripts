@@ -73,7 +73,7 @@ echo "Adding a link to the newly archived user guide..."
 echo
 
 cd ../user-guide-snapshot
-sed -i "s/<!-- RELEASE_MARKER -->/<!-- RELEASE_MARKER -->\n\t<li><a href=\"..\/user-guide-${PREVIOUS_VERSION}\/user-guide.html\">User Guide for version ${PREVIOUS_VERSION}<\/a><\/li>/g" user-guide.md
+sed -i "s/<!-- RELEASE_MARKER -->/<!-- RELEASE_MARKER -->\n\t<li><a href=\"..\/user-guide-${PREVIOUS_VERSION}\/user-guide.html\">User Guide for version ${PREVIOUS_VERSION}<\/a><\/li>/g" user-guide-older-versions.md
 
 
 

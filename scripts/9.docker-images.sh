@@ -27,7 +27,7 @@
 
 # Import the commons.
 source common.sh
-
+source 1.conf.dockerhub.sh
 
 
 echo
@@ -72,7 +72,10 @@ echo
 
 docker login -u=${DOCKER_HUB_USER} -p=${DOCKER_HUB_PWD}
 docker push roboconf/roboconf-dm:${RELEASE_VERSION}
+docker push roboconf/roboconf-dm:latest
+
 docker push roboconf/roboconf-agent:${RELEASE_VERSION}
+docker push roboconf/roboconf-agent:latest
 docker logout
 
 

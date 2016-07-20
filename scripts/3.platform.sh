@@ -57,6 +57,7 @@ ensureSuccess $? "Failed to prepare the release"
 echo
 echo "Performing the platform release..."
 echo
+
 mvn release:perform -B -DdryRun="${DRY_RUN}"
 ensureSuccess $? "Failed to perform the release"
 
@@ -65,10 +66,25 @@ ensureSuccess $? "Failed to perform the release"
 echo
 echo "Updating the parent POM's properties..."
 echo
+
 sed -i "s/[0-9]\.[0-9])\(<\/version\.range>\)/${NEXT_MINOR_VERSION})\1/g" pom.xml
 
-git commit -a -m "Updating the OSGi imports version range"
-ensureSuccess $? "Failed to commit the change of OSGi imports version range"
+
+
+echo
+echo "Updating versions in IT modules..."
+echo
+
+mvn versions:update-child-modules -DgenerateBackupPoms=false -DallowSnapshots=true -P run-integration-tests
+
+
+
+echo
+echo "Committing these last changes..."
+echo
+
+git commit -a -m "Updating the versions and OSGi imports range"
+ensureSuccess $? "Failed to commit the change of versions and OSGi imports range"
 
 
 

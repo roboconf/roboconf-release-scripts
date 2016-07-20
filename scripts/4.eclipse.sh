@@ -88,9 +88,9 @@ sed -i "s/<roboconf.platform.version>${RELEASE_VERSION}/<roboconf.platform.versi
 
 # Update the other versions
 for i in $(find . -type f -name pom.xml); do sed -i "s/>${RELEASE_VERSION}/>${REPLACEMENT}/g" $i; done
+for i in $(find . -type f -name MANIFEST.MF); do sed -i "s/Bundle-Version: ${RELEASE_VERSION}/Bundle-Version: ${REPLACEMENT}/g" $i; done
+for i in $(find . -type f -name feature.xml); do sed -i "s/\"${RELEASE_VERSION}/\"${REPLACEMENT}/g" $i; done
 
-sed -i "s/Bundle-Version: ${RELEASE_VERSION}/Bundle-Version: ${REPLACEMENT}/g" plugins/net.roboconf.eclipse.plugin/META-INF/MANIFEST.MF
-sed -i "s/\"${RELEASE_VERSION}/\"${REPLACEMENT}/g" features/net.roboconf.eclipse.feature/feature.xml
 sed -i "s/\"${RELEASE_VERSION}/\"${REPLACEMENT}/g" repository/category.xml
 
 git commit -a -m "Switching to the new development version"
