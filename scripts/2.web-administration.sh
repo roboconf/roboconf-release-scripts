@@ -45,6 +45,17 @@ ensureSuccess $? "Cannot clone project in ${DIR}"
 
 
 echo
+echo "Verifying no target directory exists..."
+echo
+
+if [ -d "target" ]; then
+	echo "The 'target' cannot exist for releases and uploads!"
+	exit 1
+fi
+
+
+
+echo
 echo "Tagging the web administration..."
 echo
 
@@ -61,3 +72,10 @@ if [[ "${DRY_RUN}" == "true" ]]; then
 else
   git push --tags origin
 fi
+
+
+echo
+echo "Archiving and uploading the application to Bintray..."
+echo
+
+./package-and-upload.sh ${RELEASE_VERSION}
