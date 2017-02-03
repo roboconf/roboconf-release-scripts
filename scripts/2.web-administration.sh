@@ -78,4 +78,6 @@ echo
 echo "Archiving and uploading the application to Bintray..."
 echo
 
-./package-and-upload.sh ${RELEASE_VERSION}
+export ${BINTRAY_USER}
+export ${BINTRAY_API_KEY}
+npm install && gulp embed && ./package-and-upload.sh ${RELEASE_VERSION}

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2014-2016 Linagora, Université Joseph Fourier, Floralis
+# Copyright 2014-2017 Linagora, Université Joseph Fourier, Floralis
 #
 # The present code is developed in the scope of the joint LINAGORA - Université
 # Joseph Fourier - Floralis research program and is designated as a "Result"
@@ -38,31 +38,47 @@
 
 # The version to be released.
 # A new tag with this version will be created in the appropriate Git repositories.
+# Example: 0.8, 0.8.1
+#
 # /!\ To be incremented manually!!!
-readonly RELEASE_VERSION="0.6.1"
+readonly RELEASE_VERSION="0.8"
 
 # The previous release's version (for the web site).
 # "user-guide" will be renamed "user-guide-${PREVIOUS_VERSION}".
+#
+# Generally...
+#
+#			RELEASE_VERSION - 1
+#
 # /!\ To be incremented manually!!!
-readonly PREVIOUS_VERSION="0.5"
+readonly PREVIOUS_VERSION="0.7"
 
 # The version of the next development iteration (no qualifier).
-# This is for the system installers which use a custom qualifier.
+# Generally...
+#
+#			RELEASE_VERSION + 1
+#
 # /!\ To be incremented manually!!!
-readonly SHORT_DEVELOPMENT_VERSION="0.7"
+readonly SHORT_DEVELOPMENT_VERSION="0.9"
 
 # The version of the next development iteration (full version).
+# Generally, not be changed.
+#
 # /!\ To be incremented manually!!!
 readonly DEVELOPMENT_VERSION="${SHORT_DEVELOPMENT_VERSION}-SNAPSHOT"
 
 # The next minor version (for import-package directives).
+# Generally...
+#
+#			SHORT_DEVELOPMENT_VERSION + 1
+#			RELEASE_VERSION + 2
 #
 # Typically, the parent POM in the platform defines a property whose value
 # is [${project.version}, ${NEXT_MINOR_VERSION}). It is used to define a
 # version range for OSGi imports.
 #
 # /!\ To be incremented manually!!!
-readonly NEXT_MINOR_VERSION="0.8"
+readonly NEXT_MINOR_VERSION="0.10"
 
 # Dry run: don't check-in or tag anything in the repositories.
 readonly DRY_RUN="false"

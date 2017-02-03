@@ -45,6 +45,15 @@ ensureSuccess $? "Cannot clone project in ${DIR}"
 
 
 echo
+echo "Deleting old images..."
+echo
+
+docker rmi roboconf/roboconf-dm:latest
+docker rmi roboconf/roboconf-agent:latest
+
+
+
+echo
 echo "Building the images..."
 echo
 
@@ -86,4 +95,17 @@ echo
 
 git tag -a -f "roboconf-dockerfile-${RELEASE_VERSION}" -m "Dockerfile for Roboconf ${RELEASE_VERSION}"
 ensureSuccess $? "Failed to tag the Dockerfile"
+
+
+echo
+echo "Pushing the tag to origin..."
+echo
+
+if [[ "${DRY_RUN}" == "true" ]]; then
+	git push --dry-run --tags origin master
+else
+  git push --tags origin master
+fi
+
+ensureSuccess $? "Failed to push tag and commit to origin"
 

@@ -196,6 +196,7 @@ done
 
 echo
 echo "Please, visit https://bintray.com/roboconf/roboconf-debian-packages/main/${RELEASE_VERSION}/view to publish the uploaded files."
+echo "Please, visit also https://bintray.com/roboconf/roboconf-rpm/main/${RELEASE_VERSION}/view to publish the uploaded files."
 echo
 echo "Notice that RPM meta-data should be calculated automatically after artifacts are published."
 echo "See http://dl.bintray.com/roboconf/roboconf-rpm/repodata/repomd.xml"

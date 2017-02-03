@@ -75,7 +75,7 @@ echo
 echo "Updating versions in IT modules..."
 echo
 
-mvn versions:update-child-modules -DgenerateBackupPoms=false -DallowSnapshots=true -P run-integration-tests
+mvn versions:update-child-modules -DgenerateBackupPoms=false -DallowSnapshots=true -P it-all
 
 
 
