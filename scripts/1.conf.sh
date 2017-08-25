@@ -41,7 +41,7 @@
 # Example: 0.8, 0.8.1
 #
 # /!\ To be incremented manually!!!
-readonly RELEASE_VERSION="0.8"
+readonly RELEASE_VERSION="0.9"
 
 # The previous release's version (for the web site).
 # "user-guide" will be renamed "user-guide-${PREVIOUS_VERSION}".
@@ -51,7 +51,7 @@ readonly RELEASE_VERSION="0.8"
 #			RELEASE_VERSION - 1
 #
 # /!\ To be incremented manually!!!
-readonly PREVIOUS_VERSION="0.7"
+readonly PREVIOUS_VERSION="0.8"
 
 # The version of the next development iteration (no qualifier).
 # Generally...
@@ -59,10 +59,10 @@ readonly PREVIOUS_VERSION="0.7"
 #			RELEASE_VERSION + 1
 #
 # /!\ To be incremented manually!!!
-readonly SHORT_DEVELOPMENT_VERSION="0.9"
+readonly SHORT_DEVELOPMENT_VERSION="0.10"
 
 # The version of the next development iteration (full version).
-# Generally, not be changed.
+# Generally, not to be changed.
 #
 # /!\ To be incremented manually!!!
 readonly DEVELOPMENT_VERSION="${SHORT_DEVELOPMENT_VERSION}-SNAPSHOT"
@@ -78,7 +78,7 @@ readonly DEVELOPMENT_VERSION="${SHORT_DEVELOPMENT_VERSION}-SNAPSHOT"
 # version range for OSGi imports.
 #
 # /!\ To be incremented manually!!!
-readonly NEXT_MINOR_VERSION="0.10"
+readonly NEXT_MINOR_VERSION="0.11"
 
 # Dry run: don't check-in or tag anything in the repositories.
 readonly DRY_RUN="false"

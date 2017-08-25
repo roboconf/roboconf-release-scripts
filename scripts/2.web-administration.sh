@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2014-2016 Linagora, Université Joseph Fourier, Floralis
+# Copyright 2014-2017 Linagora, Université Joseph Fourier, Floralis
 #
 # The present code is developed in the scope of the joint LINAGORA - Université
 # Joseph Fourier - Floralis research program and is designated as a "Result"
@@ -78,6 +78,6 @@ echo
 echo "Archiving and uploading the application to Bintray..."
 echo
 
-export ${BINTRAY_USER}
-export ${BINTRAY_API_KEY}
+export BINTRAY_USER=${BINTRAY_USER}
+export BINTRAY_API_KEY=${BINTRAY_API_KEY}
 npm install && gulp embed && ./package-and-upload.sh ${RELEASE_VERSION}

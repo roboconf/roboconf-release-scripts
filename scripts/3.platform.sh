@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2014-2016 Linagora, Université Joseph Fourier, Floralis
+# Copyright 2014-2017 Linagora, Université Joseph Fourier, Floralis
 #
 # The present code is developed in the scope of the joint LINAGORA - Université
 # Joseph Fourier - Floralis research program and is designated as a "Result"
@@ -67,7 +67,7 @@ echo
 echo "Updating the parent POM's properties..."
 echo
 
-sed -i "s/[0-9]\.[0-9])\(<\/version\.range>\)/${NEXT_MINOR_VERSION})\1/g" pom.xml
+sed -i "s/[0-9]+\.[0-9]+)\(<\/version\.range>\)/${NEXT_MINOR_VERSION})\1/g" pom.xml
 
 
 
