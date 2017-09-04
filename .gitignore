@@ -19,6 +19,5 @@
 .idea/
 
 # Ignore confidential settings 
-scripts/1.conf.bintray.sh
-scripts/1.conf.dockerhub.sh
-
+scripts/01.conf.bintray.sh
+scripts/01.conf.dockerhub.sh

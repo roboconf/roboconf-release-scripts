@@ -27,85 +27,66 @@
 
 # Import the commons.
 source common.sh
-source 1.conf.dockerhub.sh
+
 
 
 echo
-echo "Checking out the Dockerfile..."
+echo "Checking out the platform..."
 echo
 
-DIR="$(localStagingDirectory ${ROBOCONF_DOCKER})"
+DIR="$(localStagingDirectory ${ROBOCONF_PLATFORM})"
 
 mkdir -p "${DIR}" && cd "${DIR}"
 ensureSuccess $? "Cannot create/access local staging directory: ${DIR}"
 
-git clone "$(gitRepositoryUrl ${ROBOCONF_DOCKER})" "${DIR}"
+git clone "$(gitRepositoryUrl ${ROBOCONF_PLATFORM})" "${DIR}"
 ensureSuccess $? "Cannot clone project in ${DIR}"
 
 
 
 echo
-echo "Deleting old images..."
+echo "Finding the right branch..."
 echo
 
-docker rmi roboconf/roboconf-dm:latest
-docker rmi roboconf/roboconf-agent:latest
-
-
-
-echo
-echo "Building the images..."
-echo
-
-cd meta-scripts
-
-./build.sh "dm" "${RELEASE_VERSION}"
-ensureSuccess $? "The image for the DM could not be built."
-
-./verify.sh "dm"
-ensureSuccess $? "The verification for the DM's image failed."
-
-./build.sh "agent" "${RELEASE_VERSION}"
-ensureSuccess $? "The image for the agent could not be built."
-
-./verify.sh "agent"
-ensureSuccess $? "The verification for the agent's image failed."
-
-cd ..
+git checkout ${BRANCH_NAME}
+ensureSuccess $? "Cannot create and switch to branch ${BRANCH}"
 
 
 
 echo
-echo "Uploading the images to Docker Hub..."
+echo "Bump versions for release..."
 echo
 
-docker login -u=${DOCKER_HUB_USER} -p=${DOCKER_HUB_PWD}
-docker push roboconf/roboconf-dm:${RELEASE_VERSION}
-docker push roboconf/roboconf-dm:latest
+mvn versions:set -DnewVersion="${RELEASE_VERSION}-SNAPSHOT" -DgenerateBackupPoms=false
+ensureSuccess $? "Failed to bump versions for release"
 
-docker push roboconf/roboconf-agent:${RELEASE_VERSION}
-docker push roboconf/roboconf-agent:latest
-docker logout
-
+mvn validate
+ensureSuccess $? "Failed to verify the build for the maintenance release"
 
 
 echo
-echo "Tagging the release..."
+echo "Commit if necessary..."
 echo
 
-git tag -a -f "roboconf-dockerfile-${RELEASE_VERSION}" -m "Dockerfile for Roboconf ${RELEASE_VERSION}"
-ensureSuccess $? "Failed to tag the Dockerfile"
+git diff-index --quiet HEAD || git commit -a -m "Creating a new maintenance release"
+ensureSuccess $? "Failed to commit the new maintenance release preparation"
+
 
 
 echo
-echo "Pushing the tag to origin..."
+echo "Preparing the platform release..."
 echo
 
-if [[ "${DRY_RUN}" == "true" ]]; then
-	git push --dry-run --tags origin master
-else
-  git push --tags origin master
-fi
+mvn release:prepare -B -DdryRun="${DRY_RUN}"\
+	-DreleaseVersion="${RELEASE_VERSION}"\
+	-DdevelopmentVersion="${DEVELOPMENT_VERSION}"
+ensureSuccess $? "Failed to prepare the release"
 
-ensureSuccess $? "Failed to push tag and commit to origin"
 
+
+echo
+echo "Performing the platform release..."
+echo
+
+mvn release:perform -B -DdryRun="${DRY_RUN}"
+ensureSuccess $? "Failed to perform the release"

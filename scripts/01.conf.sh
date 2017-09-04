@@ -41,7 +41,7 @@
 # Example: 0.8, 0.8.1
 #
 # /!\ To be incremented manually!!!
-readonly RELEASE_VERSION="0.9"
+readonly RELEASE_VERSION="0.9.1"
 
 # The previous release's version (for the web site).
 # "user-guide" will be renamed "user-guide-${PREVIOUS_VERSION}".
@@ -92,13 +92,13 @@ readonly STAGING_DIR="/tmp/roboconf-release-staging"
 #######################################################
 
 
-# The tag to checkout for a maintenance release.
+# The branch to checkout for a maintenance release.
 #
 # Only used by the platform's maintenance release script.
 # If you are not releasing a maintenance version of the platform, do not modify it.
 #
 # /!\ To be incremented manually!!! 
-readonly MAINTENANCE_VERSION="0.6"
+readonly BRANCH_NAME="0.9.1"
 
 # The package version for system installers.
 #

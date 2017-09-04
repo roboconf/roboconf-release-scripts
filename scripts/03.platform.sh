@@ -45,31 +45,6 @@ ensureSuccess $? "Cannot clone project in ${DIR}"
 
 
 echo
-echo "Finding the right branch or creating it from the right tag..."
-echo
-
-BRANCH="${MAINTENANCE_VERSION}-maintenance"
-git checkout ${BRANCH} || git checkout -b ${BRANCH} "roboconf-platform-parent-${MAINTENANCE_VERSION}"
-ensureSuccess $? "Cannot create and switch to branch ${BRANCH}"
-
-
-
-echo
-echo "Bump versions for release..."
-echo
-
-mvn versions:set -DnewVersion="${RELEASE_VERSION}-SNAPSHOT" -DgenerateBackupPoms=false
-ensureSuccess $? "Failed to bump versions for release"
-
-mvn validate
-ensureSuccess $? "Failed to verify the build for the maintenance release"
-
-git commit -a -m "Creating a new maintenance release"
-ensureSuccess $? "Failed to commit the new maintenance release preparation"
-
-
-
-echo
 echo "Preparing the platform release..."
 echo
 mvn release:prepare -B -DdryRun="${DRY_RUN}"\
@@ -82,11 +57,6 @@ ensureSuccess $? "Failed to prepare the release"
 echo
 echo "Performing the platform release..."
 echo
+
 mvn release:perform -B -DdryRun="${DRY_RUN}"
 ensureSuccess $? "Failed to perform the release"
-
-
-
-echo
-echo "The ${BRANCH} branch was created and/or updated"
-echo

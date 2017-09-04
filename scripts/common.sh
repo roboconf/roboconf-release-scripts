@@ -26,8 +26,8 @@
 
 
 # Imports the configuration
-source 1.conf.sh
-source 1.conf.bintray.sh
+source 01.conf.sh
+source 01.conf.bintray.sh
 
 
 ################################################################################

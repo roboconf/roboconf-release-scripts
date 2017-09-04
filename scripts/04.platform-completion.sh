@@ -29,37 +29,13 @@
 source common.sh
 
 
+## Complete the release of the platform.
+## It is common to both platform release scripts (normal and maintenance).
 
-echo
-echo "Checking out the platform..."
-echo
 
 DIR="$(localStagingDirectory ${ROBOCONF_PLATFORM})"
-
 mkdir -p "${DIR}" && cd "${DIR}"
 ensureSuccess $? "Cannot create/access local staging directory: ${DIR}"
-
-git clone "$(gitRepositoryUrl ${ROBOCONF_PLATFORM})" "${DIR}"
-ensureSuccess $? "Cannot clone project in ${DIR}"
-
-
-
-echo
-echo "Preparing the platform release..."
-echo
-mvn release:prepare -B -DdryRun="${DRY_RUN}"\
-	-DreleaseVersion="${RELEASE_VERSION}"\
-	-DdevelopmentVersion="${DEVELOPMENT_VERSION}"
-ensureSuccess $? "Failed to prepare the release"
-
-
-
-echo
-echo "Performing the platform release..."
-echo
-
-mvn release:perform -B -DdryRun="${DRY_RUN}"
-ensureSuccess $? "Failed to perform the release"
 
 
 
@@ -67,7 +43,8 @@ echo
 echo "Updating the parent POM's properties..."
 echo
 
-sed -i "s/[0-9]+\.[0-9]+)\(<\/version\.range>\)/${NEXT_MINOR_VERSION})\1/g" pom.xml
+# For some reason, [0-9]+ does not work on every machine with SED.
+sed -i "s/,[0-9]*\.[0-9]*)\(<\/version\.range>\)/,${NEXT_MINOR_VERSION})\1/g" pom.xml
 
 
 
@@ -93,8 +70,8 @@ echo "Pushing the last commit to origin..."
 echo
 
 if [[ "${DRY_RUN}" == "true" ]]; then
-	git push origin master --dry-run
+	git push --all origin --dry-run
 else
-  git push origin master
+  git push --all origin
 fi
 ensureSuccess $? "Failed to push the last commit to origin"
